@@ -1,0 +1,50 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jessenger-backend
+    restart: unless-stopped
+    network_mode: "host"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-4000}
+      - PUBLIC_IP=${PUBLIC_IP:-154.16.0.2}
+      - DOMAIN=${DOMAIN:-mered.ro}
+      - JWT_SECRET=${JWT_SECRET:-jessenger_secret_key_2026}
+      - ZBCHN_INITIAL_PASSWORD=${ZBCHN_INITIAL_PASSWORD:-zbchn_root_2025}
+    volumes:
+      - ./data/db:/app/data
+      - ./data/uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jessenger-frontend
+    restart: unless-stopped
+    volumes:
+      - frontend_build:/app/dist
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: jessenger-nginx
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - backend
+      - frontend
+    command:
+      - /bin/sh
+      - -c
+      - "if [ ! -f /etc/nginx/certs/fullchain.pem ]; then apk add --no-cache openssl >/dev/null 2>&1 || true; mkdir -p /etc/nginx/certs; openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/nginx/certs/privkey.pem -out /etc/nginx/certs/fullchain.pem -subj '/CN=mered.ro'; fi && nginx -g 'daemon off;'"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_build:/usr/share/nginx/html:ro
+      - ./data/uploads:/usr/share/nginx/uploads:ro
+      - ./certs:/etc/nginx/certs
+
+volumes:
+  frontend_build:

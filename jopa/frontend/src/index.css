@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0d0d12;
+  --bg-secondary: #12121b;
+  --bg-surface: #161622;
+  --accent: #8a2be2;
+  --accent-hover: #bb86fc;
+  --text-main: #f5f0ff;
+  --text-muted: #9890b0;
+  --msg-own: #3d1975;
+  --msg-other: #171526;
+  --radius-main: 16px;
+  --glass-opacity: 0.84;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-title: 'Montserrat', 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  text-transform: lowercase;
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* В полях ввода, текстах сообщений и названиях сохраняем нормальный регистр (большие и маленькие буквы!) */
+input,
+textarea,
+p,
+pre,
+code,
+.preserve-case {
+  text-transform: none !important;
+  user-select: text;
+}
+
+h1,
+h2,
+h3,
+.font-title {
+  font-family: var(--font-title);
+  letter-spacing: 0.02em;
+}
+
+.heading-glow {
+  text-shadow:
+    0 0 14px color-mix(in srgb, var(--accent-hover) 55%, transparent),
+    0 0 28px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* Интерактивные буквы заголовков — адаптируются под цвет выбранной темы */
+.interactive-char {
+  display: inline-block;
+  transition:
+    color 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, color;
+}
+
+.interactive-char:hover {
+  color: var(--accent-hover);
+  text-shadow:
+    0 0 12px var(--accent-hover),
+    0 0 24px var(--accent);
+  transform: translateY(-1.5px);
+}
+
+/* Ссылка dev by zbchn — без приближения (scale), адаптируется под тему */
+.zbchn-link {
+  display: inline-block;
+  color: var(--accent-hover);
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    color 0.18s ease,
+    text-shadow 0.18s ease;
+}
+
+.zbchn-link:hover {
+  color: #ffffff;
+  text-shadow:
+    0 0 10px var(--accent-hover),
+    0 0 20px var(--accent);
+}
+
+/* Кнопки действия — адаптируются под выбранную тему */
+.cta-music-btn {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 42%, transparent);
+  transition:
+    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.15s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.15s ease;
+}
+
+.cta-music-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--accent-hover) 55%, transparent);
+  transform: translateY(-1px);
+}
+
+.cta-music-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(13, 13, 18, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-hover);
+}
+
+.glass-panel {
+  background: rgba(20, 20, 30, var(--glass-opacity));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.neon-glow {
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--accent) 42%, transparent),
+    0 0 40px color-mix(in srgb, var(--accent-hover) 18%, transparent);
+}
+
+.soft-glow {
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.neon-border-focus:focus {
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+/* Быстрые, плавные аппаратные анимации без лагов */
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-menu-in {
+  animation: menuFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes topToastDrop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.animate-top-toast {
+  animation: topToastDrop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes msgSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-msg-in {
+  animation: msgSlideIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Анимация всплывающего красного сердечка при двойном клике/тапе */
+@keyframes heartPopBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.35);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -58%) scale(1.28);
+  }
+  70% {
+    opacity: 0.95;
+    transform: translate(-50%, -65%) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -82%) scale(0.85);
+  }
+}
+
+.animate-heart-burst {
+  animation: heartPopBurst 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes eqBar {
+  0%,
+  100% {
+    height: 30%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+.eq-bar-1 {
+  background-color: var(--accent-hover);
+  animation: eqBar 0.55s ease-in-out infinite;
+}
+.eq-bar-2 {
+  background-color: var(--accent);
+  animation: eqBar 0.55s ease-in-out 0.16s infinite;
+}
+.eq-bar-3 {
+  background-color: var(--accent-hover);
+  animation: eqBar 0.55s ease-in-out 0.32s infinite;
+}
+
+@keyframes highlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-hover) 70%, transparent);
+    border-color: var(--accent-hover);
+  }
+  50% {
+    box-shadow: 0 0 24px 6px color-mix(in srgb, var(--accent) 55%, transparent);
+    border-color: #ffffff;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.highlighted-message {
+  animation: highlightPulse 1.8s ease-out infinite;
+  border-color: var(--accent-hover) !important;
+}
+
+.resize-handle-x {
+  width: 5px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.15s ease;
+  z-index: 30;
+  flex-shrink: 0;
+}
+
+.resize-handle-x:hover,
+.resize-handle-x:active {
+  background: var(--accent);
+}
+
+/* На телефонах предотвращаем авто-зум iOS при фокусе на поле ввода */
+@media (max-width: 767px) {
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+
+@keyframes tooltipPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-tooltip-in {
+  animation: tooltipPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fullscreen-clean-video:fullscreen,
+.fullscreen-clean-video:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  background: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+.fullscreen-clean-video:fullscreen video,
+.fullscreen-clean-video:-webkit-full-screen video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  filter: none !important;
+  transform: none !important;
+}

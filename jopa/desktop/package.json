@@ -1,0 +1,41 @@
+{
+  "name": "jessenger-desktop",
+  "version": "1.0.0",
+  "description": "Jessenger Desktop — нативное приложение для ПК с офлайн-режимом, кэшем чатов и скачанных файлов",
+  "main": "main.js",
+  "scripts": {
+    "build:renderer": "cd ../frontend && npm run build -- --base=./ --outDir=../desktop/renderer",
+    "start": "electron .",
+    "dist:win": "npm run build:renderer && electron-builder --win",
+    "dist:mac": "npm run build:renderer && electron-builder --mac",
+    "dist:linux": "npm run build:renderer && electron-builder --linux"
+  },
+  "build": {
+    "appId": "ro.mered.jessenger",
+    "productName": "Jessenger",
+    "directories": {
+      "output": "dist-installers"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "../frontend/public/favicon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "../frontend/public/favicon.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "../frontend/public/favicon.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}
